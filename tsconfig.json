@@ -5,6 +5,7 @@
     "removeComments": true,
     "sourceMap": true,
     "outDir": "dist",
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
