@@ -1,8 +1,12 @@
 import { app, BrowserWindow, Tray, Menu } from "electron";
+import { WebSocketService } from './servces/webSocketService';
 import * as path from "path";
 
 let appIcon :any = null;
 let mainWindow :BrowserWindow = null;
+const port = 3001;
+const wsPort = 8998;
+const webSocketService = new WebSocketService(wsPort);
 
 function createWindow() {
   // Create the browser window.
