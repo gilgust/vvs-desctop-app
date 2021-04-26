@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
-const hb = require('handlebars');
+const handlebars = require('handlebars');
 const fs = require('fs');
 var path = require('path');
-import * as ptp from "pdf-to-printer";
+import * as pdfToPrinter from "pdf-to-printer";
 
 export class PrinterService {
   constructor() {
@@ -10,7 +10,7 @@ export class PrinterService {
 
   async printHtml(str: string){
     const strTemplate = `<!DOCTYPE html><html><head></head><body>${str}</body></html>`;
-    const template = hb.compile(strTemplate, { strict: true });
+    const template = handlebars.compile(strTemplate, { strict: true });
     let data = {};
     
     const result = template(data);
@@ -24,7 +24,7 @@ export class PrinterService {
     await page.pdf({ path: check, format: 'A4' });
     await browser.close();
     
-    ptp
+    pdfToPrinter
     .print(check)
     .then(fs.unlinkSync(check))
     .catch(console.error);

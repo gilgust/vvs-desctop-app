@@ -17,15 +17,16 @@ export class WebSocketService{
         });
     }
     
-    onMessage(ws : any, query : any){ 
+    async onMessage(ws : any, query : any){ 
         let request : QueryModel = JSON.parse(query as string);
 
         switch(request.action){
             case 'printHtml':
-                this.printService.printHtml(request.data).then(result => {
-                    ws.send(JSON.stringify({action: 'printed'}));
-                });
-                // ws.send(JSON.stringify({action: 'printed'}));
+                // this.printService.printHtml(request.data).then(result => {
+                //     ws.send(JSON.stringify({action: 'printed'}));
+                // });
+                await this.printService.printHtml(request.data);
+                ws.send(JSON.stringify({action: 'printed'}));
                 break;
             case 'checkConnection':
                 ws.send(JSON.stringify({action: 'connectionChecked'}));
