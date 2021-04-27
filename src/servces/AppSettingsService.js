@@ -1,11 +1,14 @@
-const data = require('./../../printerSettings.json');
-const AppSettings = require('../models/PrinterSettings');
 const fs = require('fs');
-const fileName = './../../printerSettings.json';
-const file = require(fileName);
+const path = require('path');
+const {app} = require('electron');
 const pdfToPrinter = require("pdf-to-printer");
+
+const data = require(path.join(app.getAppPath(),'printerSettings.json'));
+const fileName = path.join(app.getAppPath(),'printerSettings.json');
+const file = require(fileName);
+
+const AppSettings = require('../models/PrinterSettings');
 const Printer = require('../models/printer');
-const { electron } = require('process');
 
 class AppSettingsService {
   _appSettings;
@@ -38,8 +41,7 @@ class AppSettingsService {
   }
 
   async getPrinteresAsync(){
-    let promis = pdfToPrinter.getPrinters();
-    let promisResult = await promis;
+    let promisResult = await pdfToPrinter.getPrinters();
     
     let result = [];
     promisResult.forEach(item =>{

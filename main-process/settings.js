@@ -8,9 +8,7 @@ ipcMain.on('get-printers', (event) => {
   let printeresPromis = printerSettings.getPrinteresAsync();
 
   printeresPromis
-  .then((result) => { 
-    console.log("main-proc result");
-    console.log(result);
+  .then((result) => {
     event.returnValue = {"printeres" : result, "error" : null};  
   })
   .catch((err) => {
@@ -20,9 +18,19 @@ ipcMain.on('get-printers', (event) => {
 
 //update printer for check
 ipcMain.on('update-printer-for-check', (event, data) => {
-  printerSettings.printerForChecks = data;
+  printerSettings.printerIdForChecks = data;
   let result = {
-    "printerForChecks" : printerSettings.printerForChecks, 
+    "printerId" : printerSettings.printerIdForChecks,
+    "error" : null
+  };
+  event.returnValue = result;
+});
+
+//update printer for invoice
+ipcMain.on('update-printer-for-invoice', (event, data) => {
+  printerSettings.printerIdForInvoice = data;
+  let result = {
+    "printerId" : printerSettings.printerIdForChecks,
     "error" : null
   };
   event.returnValue = result;

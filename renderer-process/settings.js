@@ -6,10 +6,18 @@ let invoicePrinterList;
 
 //update printer for checks
 function UpdateCheckPrinter(){
-  console.log(this);
-  console.log(this.value);
   try {
     let reply = ipcRenderer.sendSync('update-printer-for-check', this.value);
+    console.log(reply); 
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//update printer for invoice
+function UpdateInvoicePrinter(){
+  try {
+    let reply = ipcRenderer.sendSync('update-printer-for-invoice', this.value);
     console.log(reply); 
   } catch (error) {
     console.log(error);
@@ -19,8 +27,8 @@ function UpdateCheckPrinter(){
 function init(){
   checkPrinterList = document.getElementById('check-printer-list');
   invoicePrinterList = document.getElementById('invoice-printer-list');
-  // checkPrinterList.addEventListener("change", UpdateCheckPrinter);
-  // invoicePrinterList.addEventListener("change", UpdateInvoicePrinter);
+  checkPrinterList.addEventListener("change", UpdateCheckPrinter);
+  invoicePrinterList.addEventListener("change", UpdateInvoicePrinter);
 }
 
 //load printers
@@ -43,7 +51,7 @@ function loadPrinter(){
       return acc;
     },
     "");
-    checkPrinterList.innerHtml = checkPrinters;
+    checkPrinterList.innerHTML = checkPrinters;
     
     //set printers for invoice
     let invoicePrinters = reply.printeres.

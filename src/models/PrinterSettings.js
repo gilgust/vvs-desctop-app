@@ -1,6 +1,6 @@
 class AppSettings{
-    printerForChecks;
-    printerForInvoice;
+    printerIdForChecks;
+    printerIdForInvoice;
 }
 
 module.exports = AppSettings
