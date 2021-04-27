@@ -31,6 +31,7 @@
     "ws": "^7.4.5"
   },
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "electron-store": "^8.0.0",
     "nodemon": "^2.0.7",
     "pdf-to-printer": "^2.0.0",

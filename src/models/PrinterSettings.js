@@ -1,5 +1,4 @@
 class AppSettings{
-    appDir;
     printerForChecks;
     printerForInvoice;
 }

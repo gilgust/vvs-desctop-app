@@ -3,15 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>settings</title>
-
   </head>
   <body>
     <section>
-      <select name="printereList" id="printereList"></select> 
-        <button id="sync-msg">test</button>
-        <button id="app-address">app address</button>
-      <script type="text/javascript">
+      <div class="printerSelect">
+        <h5>принтер для чеков</h5>
+        <select name="check-printer-list" id="check-printer-list">
+        </select>
+      </div>
+      <div class="printerSelect">
+        <h5>принтер для инвойсов</h5>
+        <select name="invoice-printer-list" id="invoice-printer-list"></select>
+      </div>
+      <!-- <script type="text/javascript">
         require('./renderer-process/settings');
+      </script> -->
+      <script src="./renderer-process/settings.js">
       </script>
     </section>
   </body>
