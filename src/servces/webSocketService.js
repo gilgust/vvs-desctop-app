@@ -1,11 +1,10 @@
-import * as WebSocket from 'ws';
-import {PrinterService} from './PrinterService';
-import QueryModel from './../models/QueryModel';
+const WebSocket = require('ws');
+const PrinterService = require('./PrinterService');
 
-export class WebSocketService{
-    wss: WebSocket.Server;
-    printService : PrinterService;
-    constructor(port : number ) {
+class WebSocketService{
+    wss;
+    printService;
+    constructor(port ) {
         this.printService = new PrinterService();
 
         this.wss = new WebSocket.Server({ port });
@@ -17,8 +16,8 @@ export class WebSocketService{
         });
     }
     
-    async onMessage(ws : any, query : any){ 
-        let request : QueryModel = JSON.parse(query as string);
+    async onMessage(ws , query ){ 
+        let request = JSON.parse(query );
 
         switch(request.action){
             case 'printHtml':
@@ -35,3 +34,4 @@ export class WebSocketService{
         
     }
 }
+module.exports = WebSocketService

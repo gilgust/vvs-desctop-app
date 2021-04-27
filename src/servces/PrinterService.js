@@ -2,13 +2,13 @@ const puppeteer = require('puppeteer');
 const handlebars = require('handlebars');
 const fs = require('fs');
 var path = require('path');
-import * as pdfToPrinter from "pdf-to-printer";
+const pdfToPrinter = require("pdf-to-printer");
 
-export class PrinterService {
+class PrinterService {
   constructor() {
   }
 
-  async printHtml(str: string){
+  async printHtml(str){
     const strTemplate = `<!DOCTYPE html><html><head></head><body>${str}</body></html>`;
     const template = handlebars.compile(strTemplate, { strict: true });
     let data = {};
@@ -45,3 +45,5 @@ export class PrinterService {
     return checkDir;
   }
 }
+
+module.exports = PrinterService
