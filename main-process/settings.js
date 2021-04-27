@@ -3,13 +3,14 @@ const AppSettingsService = require('./../src/servces/AppSettingsService');
 const printerSettings = new AppSettingsService();
 
 //get list of printers
-ipcMain.on('get-printeres', (event) => {  
-  console.log('get list of printers');
+ipcMain.on('get-printers', (event) => {
   printerSettings;
-  let printeresPromis = printerSettings.getPrinteres();
+  let printeresPromis = printerSettings.getPrinteresAsync();
 
   printeresPromis
   .then((result) => { 
+    console.log("main-proc result");
+    console.log(result);
     event.returnValue = {"printeres" : result, "error" : null};  
   })
   .catch((err) => {

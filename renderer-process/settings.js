@@ -19,7 +19,7 @@ function UpdateCheckPrinter(){
 function init(){
   checkPrinterList = document.getElementById('check-printer-list');
   invoicePrinterList = document.getElementById('invoice-printer-list');
-  checkPrinterList.addEventListener("change", UpdateCheckPrinter);
+  // checkPrinterList.addEventListener("change", UpdateCheckPrinter);
   // invoicePrinterList.addEventListener("change", UpdateInvoicePrinter);
 }
 
@@ -28,29 +28,33 @@ function loadPrinter(){
   try {
     let reply = ipcRenderer.sendSync('get-printers');
     console.log(reply); 
-    if (reply.error != null && reply.error != undefined) {
+    
+    if (reply.error = null || reply.error != undefined) {
       console.log(error);
       return;
     }
-    console.log(reply);
     
     //set printers for checks
-    let checkPrinters = reply.
+    let checkPrinters = reply.printeres.
     reduce((acc, element) => {
       let isSelected = element.isCheckPrinter? selected="selected" : "";
-      acc += `<option value="${element.id}" ${isSelected}>${element.id}</option>`;
+      let id = element.id.replace(/\s/g, '-').toLowerCase();
+      acc += `<option value="${id}" ${isSelected}>${element.title}</option>`;
+      return acc;
     },
     "");
     checkPrinterList.innerHtml = checkPrinters;
     
     //set printers for invoice
-    let invoicePrinters = reply.
+    let invoicePrinters = reply.printeres.
     reduce((acc, element) => {
       let isSelected = element.isInvoicePrinter? selected="selected" : "";
-      acc += `<option value="${element.id}" ${isSelected}>${element.id}</option>`;
+      let id = element.id.replace(/\s/g, '-').toLowerCase();
+      acc += `<option value="${id}" ${isSelected}>${element.title}</option>`;
+      return acc;
     },
     "");
-    invoicePrinterList.innerHtml = invoicePrinters;
+    invoicePrinterList.innerHTML = invoicePrinters;
 
   } catch (error) {
     console.log(error);

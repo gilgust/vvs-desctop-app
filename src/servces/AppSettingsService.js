@@ -5,46 +5,51 @@ const fileName = './../../printerSettings.json';
 const file = require(fileName);
 const pdfToPrinter = require("pdf-to-printer");
 const Printer = require('../models/printer');
+const { electron } = require('process');
 
 class AppSettingsService {
   _appSettings;
   constructor() {
     let appSettings = new AppSettings();
-    appSettings.printerForChecks = data.printerForChecks;
-    appSettings.printerForInvoice = data.printerForInvoice;
+    appSettings.printerIdForChecks = data.printerIdForChecks;
+    appSettings.printerIdForInvoice = data.printerIdForInvoice;
     
     this._appSettings = appSettings;
   }
   
-  get printerForChecks () {
-    return this._appSettings.printerForChecks;
+  get printerIdForChecks () {
+    return this._appSettings.printerIdForChecks;
   }
-  set printerForChecks (value) {
-    this._appSettings.printerForChecks = value;
-    this.writeSetting("printerForChecks", value);
+  set printerIdForChecks (value) {
+    this._appSettings.printerIdForChecks = value;
+    this.writeSetting("printerIdForChecks", value);
   }
 
-  get printerForInvoice () {
-    return this._appSettings.printerForInvoice;
+  get printerIdForInvoice () {
+    return this._appSettings.printerIdForInvoice;
   }
-  set printerForInvoice (value) {
-    this._appSettings.printerForInvoice = value;
-    this.writeSetting("printerForInvoice", value);
+  set printerIdForInvoice (value) {
+    this._appSettings.printerIdForInvoice = value;
+    this.writeSetting("printerIdForInvoice", value);
   }
 
   getSettings () {
     return this._appSettings;
   }
 
-  async getPrinteres(){
+  async getPrinteresAsync(){
     let promis = pdfToPrinter.getPrinters();
-    console.log(promis);
-    console.log(await promis);
-    let promisResult = promis.then(result => { 
-      console.log(result);
-      new Promis((resolve) => resolve(result));
+    let promisResult = await promis;
+    
+    let result = [];
+    promisResult.forEach(item =>{
+      let id = item.deviceId.replace(/\s/g, '-').toLowerCase();
+      let isCheckPrinter = id === this.printerIdForChecks;
+      let isInvoicePrinter = id === this.printerIdForInvoice;
+      result.push(new Printer(id, item.deviceId, isCheckPrinter, isInvoicePrinter));
     });
-    return promisResult;
+
+    return result;
   }
 
   writeSetting(key, value) {
