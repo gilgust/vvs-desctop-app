@@ -1,13 +1,13 @@
 class Printer{
     id ;
     title;
-    isCheckPrinter;
+    isReceiptPrinter;
     isInvoicePrinter;
     
-    constructor(id , title, isCheckPrinter, isInvoicePrinter) {
+    constructor(id , title, isReceiptPrinter, isInvoicePrinter) {
         this.id = id;
         this.title = title;
-        this.isCheckPrinter = isCheckPrinter;
+        this.isReceiptPrinter = isReceiptPrinter;
         this.isInvoicePrinter = isInvoicePrinter;
     }
 }

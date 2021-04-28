@@ -35,16 +35,16 @@ class PrinterService {
     const page = await browser.newPage();
     await page.setContent(html);
 
-    let check = path.join(this.locationForChecks(), `${queryModel.printDataType}.${Date.now().toString()}.pdf`);
+    let receipt = path.join(this.locationForReceipts(), `${queryModel.printDataType}.${Date.now().toString()}.pdf`);
 
-    await page.pdf({ path: check, format: 'A4' });
+    await page.pdf({ path: receipt, format: 'A4' });
     await browser.close();
     
-    console.log(check);
+    console.log(receipt);
     //print pdf
     pdfToPrinter
-    .print(check, { printer: printer.title })
-    .then( (data) => fs.unlinkSync(check))
+    .print(receipt, { printer: printer.title })
+    .then( (data) => fs.unlinkSync(receipt))
     .catch(error => console.log(error));
   }
 
@@ -54,64 +54,16 @@ class PrinterService {
     return result;
   }
 
-  locationForChecks(){
-    let checkDir = path.join(app.getAppPath(),'checkdir');
+  locationForReceipts(){
+    let receiptDir = path.join(app.getAppPath(),'receiptdir');
 
-    if (!fs.existsSync(checkDir)) {
-      fs.mkdirSync(checkDir);
+    if (!fs.existsSync(receiptDir)) {
+      fs.mkdirSync(receiptDir);
     }
     
-    return checkDir;
+    return receiptDir;
   }
   
 }
 
 module.exports = PrinterService
-
-// const puppeteer = require('puppeteer');
-// const handlebars = require('handlebars');
-// const pdfToPrinter = require("pdf-to-printer");
-// const {app} = require('electron');
-// const fs = require('fs');
-// const path = require('path');
-
-// class PrinterService {
-//   appSettings;
-//   constructor(appSettingsService) {
-//     this.appSettings = appSettingsService;
-//   }
-
-//   async printHtmlAsync(str){
-//     const strTemplate = `<!DOCTYPE html><html><head></head><body>${str}</body></html>`;
-//     const template = handlebars.compile(strTemplate, { strict: true });
-//     let data = {};
-    
-//     const result = template(data);
-//     const html = result;
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-//     await page.setContent(html);
-
-//     let check = this.locationForChecks() + `check.${Date.now().toString()}.pdf`;
-    
-//     await page.pdf({ path: check, format: 'A4' });
-//     await browser.close();
-    
-//     pdfToPrinter
-//     .print(check)
-//     .then(fs.unlinkSync(check))
-//     .catch(console.error);
-//   }
-
-//    locationForChecks(){
-//     let checkDir = path.join(app.getAppPath(),'checkdir');
-
-//     if (!fs.existsSync(checkDir)) {
-//       fs.mkdirSync(checkDir);
-//     }
-    
-//     return checkDir;
-//   }
-// }
-
-// module.exports = PrinterService

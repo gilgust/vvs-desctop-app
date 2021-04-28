@@ -1,5 +1,5 @@
 class AppSettings{
-    printerIdForChecks;
+    printerIdForReceipts;
     printerIdForInvoice;
 }
 

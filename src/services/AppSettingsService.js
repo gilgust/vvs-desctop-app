@@ -14,18 +14,18 @@ class AppSettingsService {
   _appSettings;
   constructor() {
     let appSettings = new AppSettings();
-    appSettings.printerIdForChecks = data.printerIdForChecks;
+    appSettings.printerIdForReceipts = data.printerIdForReceipts;
     appSettings.printerIdForInvoice = data.printerIdForInvoice;
     
     this._appSettings = appSettings;
   }
   
-  get printerIdForChecks () {
-    return this._appSettings.printerIdForChecks;
+  get printerIdForReceipts () {
+    return this._appSettings.printerIdForReceipts;
   }
-  set printerIdForChecks (value) {
-    this._appSettings.printerIdForChecks = value;
-    this.writeSetting("printerIdForChecks", value);
+  set printerIdForReceipts (value) {
+    this._appSettings.printerIdForReceipts = value;
+    this.writeSetting("printerIdForReceipts", value);
   }
 
   get printerIdForInvoice () {
@@ -46,9 +46,9 @@ class AppSettingsService {
     let result = [];
     promisResult.forEach(item =>{
       let id = item.deviceId.replace(/\s/g, '-').toLowerCase();
-      let isCheckPrinter = id === this.printerIdForChecks;
+      let isReceiptPrinter = id === this.printerIdForReceipts;
       let isInvoicePrinter = id === this.printerIdForInvoice;
-      result.push(new Printer(id, item.deviceId, isCheckPrinter, isInvoicePrinter));
+      result.push(new Printer(id, item.deviceId, isReceiptPrinter, isInvoicePrinter));
     });
 
     return result;
@@ -61,9 +61,9 @@ class AppSettingsService {
     let result = null;
 
     switch (printDataType) {
-      case 'check':
+      case 'receipt':
         printers.forEach(element => {
-          if (element.isCheckPrinter) {
+          if (element.isReceiptPrinter) {
             result = element;
           }
         });

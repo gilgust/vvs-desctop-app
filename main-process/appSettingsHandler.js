@@ -6,16 +6,16 @@ class AppSettingsHandler{
     this.printerSettings = appSettingsService;
     //get list of printers
     ipcMain.on('get-printers',(event) =>  this.getPrinters(event));
-    //update printer for check
-    ipcMain.on('update-printer-for-check', (event, data) => this.updatePrinterForCheck(event, data));
+    //update printer for receipts
+    ipcMain.on('update-printer-for-receipt', (event, data) => this.updatePrinterForReceipt(event, data));
     //update printer for invoice
     ipcMain.on('update-printer-for-invoice', (event, data) => this.updatePrinterForInvoice(event, data));
   }
 
-  updatePrinterForCheck (event, data) {
-    this.printerSettings.printerIdForChecks = data;
+  updatePrinterForReceipt  (event, data) {
+    this.printerSettings.printerIdForReceipts = data;
     let result = {
-      "printerId" : this.printerSettings.printerIdForChecks,
+      "printerId" : this.printerSettings.printerIdForReceipts,
       "error" : null
     };
     event.returnValue = result;

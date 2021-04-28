@@ -1,13 +1,13 @@
 const {ipcRenderer} = require('electron');  
 
 window.addEventListener('DOMContentLoaded', () => {
-let checkPrinterList;
+let receiptPrinterList;
 let invoicePrinterList;
 
-//update printer for checks
-function UpdateCheckPrinter(){
+//update printer for receipts
+function UpdateReceiptPrinter(){
   try {
-    let reply = ipcRenderer.sendSync('update-printer-for-check', this.value);
+    let reply = ipcRenderer.sendSync('update-printer-for-receipt', this.value);
   } catch (error) {
     console.log(error);
   }
@@ -23,9 +23,9 @@ function UpdateInvoicePrinter(){
 }
 
 function init(){
-  checkPrinterList = document.getElementById('check-printer-list');
+  receiptPrinterList = document.getElementById('receipt-printer-list');
   invoicePrinterList = document.getElementById('invoice-printer-list');
-  checkPrinterList.addEventListener("change", UpdateCheckPrinter);
+  receiptPrinterList.addEventListener("change", UpdateReceiptPrinter);
   invoicePrinterList.addEventListener("change", UpdateInvoicePrinter);
 }
 
@@ -39,16 +39,16 @@ function loadPrinter(){
       return;
     }
     
-    //set printers for checks
-    let checkPrinters = reply.printeres.
+    //set printers for receipts
+    let receiptPrinters = reply.printeres.
     reduce((acc, element) => {
-      let isSelected = element.isCheckPrinter? selected="selected" : "";
+      let isSelected = element.isReceiptPrinter? selected="selected" : "";
       let id = element.id.replace(/\s/g, '-').toLowerCase();
       acc += `<option value="${id}" ${isSelected}>${element.title}</option>`;
       return acc;
     },
     "");
-    checkPrinterList.innerHTML = checkPrinters;
+    receiptPrinterList.innerHTML = receiptPrinters;
     
     //set printers for invoice
     let invoicePrinters = reply.printeres.
