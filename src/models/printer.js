@@ -11,4 +11,5 @@ class Printer{
         this.isInvoicePrinter = isInvoicePrinter;
     }
 }
+
 module.exports = Printer

@@ -1,14 +1,15 @@
 const WebSocket = require('ws');
-const PrinterService = require('./PrinterService');
 
 class WebSocketService{
-    wss;
+    webSocketService;
     printService;
-    constructor(port ) {
-        this.printService = new PrinterService();
+    appSettings;
+    constructor(port, appSettingsService, printerService) {
+        this.appSettings = appSettingsService;
+        this.printService = printerService;
 
-        this.wss = new WebSocket.Server({ port });
-        this.wss.on('connection', ws => {
+        this.webSocketService = new WebSocket.Server({ port });
+        this.webSocketService.on('connection', ws => {
             console.log('connection');
 
             ws.send(JSON.stringify({ message: "connected"})); 
@@ -21,10 +22,7 @@ class WebSocketService{
 
         switch(request.action){
             case 'printHtml':
-                // this.printService.printHtml(request.data).then(result => {
-                //     ws.send(JSON.stringify({action: 'printed'}));
-                // });
-                await this.printService.printHtml(request.data);
+                await this.printService.printHtmlAsync(request);
                 ws.send(JSON.stringify({action: 'printed'}));
                 break;
             case 'checkConnection':

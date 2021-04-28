@@ -1,11 +1,13 @@
-class RequestPrinHtmlModel{
-    _action;
-    _data;
+class RequestPrintHtmlModel{
+    action;
+    data;
+    printDataType;
 
-    constructor(action, data) {
-        this._action = action;
-        this._data = data;
+    constructor(action, data, printDataType) {
+        this.action = action;
+        this.data = data;
+        this.printDataType = printDataType;
     }
 }
 
-module.exports = RequestPrinHtmlModel
+module.exports.getRequestPrintHtmlModel = () => RequestPrintHtmlModel

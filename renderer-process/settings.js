@@ -8,7 +8,6 @@ let invoicePrinterList;
 function UpdateCheckPrinter(){
   try {
     let reply = ipcRenderer.sendSync('update-printer-for-check', this.value);
-    console.log(reply); 
   } catch (error) {
     console.log(error);
   }
@@ -18,7 +17,6 @@ function UpdateCheckPrinter(){
 function UpdateInvoicePrinter(){
   try {
     let reply = ipcRenderer.sendSync('update-printer-for-invoice', this.value);
-    console.log(reply); 
   } catch (error) {
     console.log(error);
   }
@@ -35,7 +33,6 @@ function init(){
 function loadPrinter(){
   try {
     let reply = ipcRenderer.sendSync('get-printers');
-    console.log(reply); 
     
     if (reply.error = null || reply.error != undefined) {
       console.log(error);

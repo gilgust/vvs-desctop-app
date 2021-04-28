@@ -54,6 +54,37 @@ class AppSettingsService {
     return result;
   }
 
+  async getPrinterByPrintDataTypeAsync(printDataType){
+    
+    let printersPromis = this.getPrinteresAsync();
+    let printers = await printersPromis;
+    let result = null;
+
+    switch (printDataType) {
+      case 'check':
+        printers.forEach(element => {
+          if (element.isCheckPrinter) {
+            result = element;
+          }
+        });
+        break;
+      case 'invoice':
+
+        printers.forEach(element => {
+          if (element.isInvoicePrinter) {
+            result = element;
+          }
+        });
+        break;
+      default:
+        throw new Error('Wrong print data type');
+        break;
+    }
+    return result != null 
+      ? result 
+      : new Printer("", "", false, false);
+  }
+
   writeSetting(key, value) {
     console.log(key);
     console.log(value);

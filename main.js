@@ -1,18 +1,24 @@
 const { app, Tray, BrowserWindow } = require("electron");
-const WebSocketService = require('./src/servces/webSocketService');
 const path = require('path');
 const glob = require('glob');
 
+const AppSettingsService = require('./src/services/AppSettingsService');
+const PrinterService = require('./src/services/PrinterService');
+const AppSettingsHandler = require('./main-process/appSettingsHandler');
+const WebSocketService = require('./src/services/webSocketService');
+
+const wsPort = 8998;
 let appIcon = null;
 let mainWindow = null;
-const wsPort = 8998;
-const webSocketService = new WebSocketService(wsPort);
+let appSettingsService = new AppSettingsService();
+let printerService = new PrinterService(appSettingsService);
+let appSettingsHandler = new AppSettingsHandler(appSettingsService);
+let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService);
 
 function initialize(){
-  makeSingleInstance()
+  makeSingleInstance();
 
   function createMainWindow() {
-    
     const mainWindow = new BrowserWindow({
       width: 1000,
       height: 600,
@@ -30,6 +36,7 @@ function initialize(){
       mainWindow.show();
     });
     mainWindow.removeMenu();
+
     return mainWindow;
   }
 
@@ -48,6 +55,7 @@ function initialize(){
             mainWindow.setSkipTaskbar(false);
         }
     });
+
     return appIcon;
   }
   
@@ -72,7 +80,7 @@ function initialize(){
     app.quit();
   });
 
-  LoadMainProcess();
+  // LoadMainProcess();
 }
  
 initialize();
@@ -87,12 +95,5 @@ function makeSingleInstance () {
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
     }
-  })
+  });
 }
-
-function LoadMainProcess () {
-  const files = glob.sync(path.join(__dirname, 'main-process/**/*.js'));
-  files.forEach((file) => { require(file) });
-}
-
-
