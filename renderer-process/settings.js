@@ -41,24 +41,22 @@ function loadPrinter(){
     
     //set printers for receipts
     let receiptPrinters = reply.printeres.
-    reduce((acc, element) => {
-      let isSelected = element.isReceiptPrinter? selected="selected" : "";
-      let id = element.id.replace(/\s/g, '-').toLowerCase();
-      acc += `<option value="${id}" ${isSelected}>${element.title}</option>`;
-      return acc;
-    },
-    "");
+      reduce((acc, item) => {
+        let isSelected = item.isReceiptPrinter? selected="selected" : "";
+        let id = item.id.replace(/\s/g, '-').toLowerCase();
+        acc += `<option value="${id}" ${isSelected}>${item.title}</option>`;
+        return acc;
+      }, "");
     receiptPrinterList.innerHTML = receiptPrinters;
     
     //set printers for invoice
     let invoicePrinters = reply.printeres.
-    reduce((acc, element) => {
-      let isSelected = element.isInvoicePrinter? selected="selected" : "";
-      let id = element.id.replace(/\s/g, '-').toLowerCase();
-      acc += `<option value="${id}" ${isSelected}>${element.title}</option>`;
-      return acc;
-    },
-    "");
+      reduce((acc, item) => {
+        let isSelected = item.isInvoicePrinter? selected="selected" : "";
+        let id = item.id.replace(/\s/g, '-').toLowerCase();
+        acc += `<option value="${id}" ${isSelected}>${item.title}</option>`;
+        return acc;
+      }, "");
     invoicePrinterList.innerHTML = invoicePrinters;
 
   } catch (error) {

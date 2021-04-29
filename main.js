@@ -1,11 +1,11 @@
 const { app, Tray, BrowserWindow } = require("electron");
 const path = require('path');
-const glob = require('glob');
 
-const AppSettingsService = require('./src/services/AppSettingsService');
-const PrinterService = require('./src/services/PrinterService');
+const AppSettingsService = require('./services/appSettingsService');
+const PrinterService = require('./services/printerService');
 const AppSettingsHandler = require('./main-process/appSettingsHandler');
-const WebSocketService = require('./src/services/webSocketService');
+const ScannerServie = require('./services/scannerServie');
+const WebSocketService = require('./services/webSocketService');
 
 const wsPort = 8998;
 let appIcon = null;
@@ -13,7 +13,8 @@ let mainWindow = null;
 let appSettingsService = new AppSettingsService();
 let printerService = new PrinterService(appSettingsService);
 let appSettingsHandler = new AppSettingsHandler(appSettingsService);
-let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService);
+let scannerServie = new ScannerServie();
+let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService, scannerServie);
 
 function initialize(){
   makeSingleInstance();
@@ -80,7 +81,6 @@ function initialize(){
     app.quit();
   });
 
-  // LoadMainProcess();
 }
  
 initialize();

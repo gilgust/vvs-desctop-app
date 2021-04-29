@@ -7,7 +7,7 @@ const data = require(path.join(app.getAppPath(),'printerSettings.json'));
 const fileName = path.join(app.getAppPath(),'printerSettings.json');
 const file = require(fileName);
 
-const AppSettings = require('../models/PrinterSettings');
+const AppSettings = require('../models/printerSettings');
 const Printer = require('../models/printer');
 
 class AppSettingsService {
