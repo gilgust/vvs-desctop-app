@@ -1,9 +1,9 @@
 class QueryModel {
-    _action;
-    _data;
+    action;
+    data;
 
     constructor(action) {
-        this._action = action;
+        this.action = action;
     }
 }
 module.exports = QueryModel

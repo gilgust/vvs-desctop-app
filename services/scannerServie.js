@@ -3,7 +3,6 @@ const path = require('path');
 var exec = require('child_process').execFile;
 var ps = require('current-processes');
 
-
 /**
  * @typedef {Object} DataReaderStatus
  * @property {any} error
@@ -31,12 +30,17 @@ class ScannerServie{
      */
     _processWasStart;
     /**
+     * @type {boolean}
+     */
+    _isFirstRun;
+    /**
      * @type{NodeJS.Timeout}
      */
     _checkingStatusTimer;
    
     constructor() {
         this._processWasStart = false;
+        this._isFirstRun = false;
     }
 
     /**
@@ -59,20 +63,17 @@ class ScannerServie{
      * @param {checkingStatusCallback} checkStatusCallback
      */
     checkingDataReaderIsRunning(checkStatusCallback){
-        this._checkingStatusTimer = setInterval(() => { 
-            ps.get((err, processes) => {
-                let result = this.checkDataReaderStarted(err, processes);
-                checkStatusCallback(result);
-            });
-        }, 1000);
+        this._checkingStatusTimer = setInterval(() =>
+            ps.get((err, processes) => this.checkDataReaderStarted(err, processes, checkStatusCallback)), 
+            1000);
     }
 
     /**
      * @param {any} err
      * @param {Process[]} processes
-     * @return {DataReaderStatus} status of DataReader
+     * @param {checkingStatusCallback} checkStatusCallback
      */
-    checkDataReaderStarted(err, processes){
+    checkDataReaderStarted(err, processes, checkStatusCallback){
         
         if (err != null) {
             return {
@@ -93,19 +94,24 @@ class ScannerServie{
             if (!this._processWasStart) {
                 this._processWasStart = true;
             }
-            result.status = 'running';
+            if (!this._isFirstRun) {
+                this._isFirstRun = true;
+                result.status = 'running';
+                checkStatusCallback(result);
+            }
         }
         else{
             if (this._processWasStart) {
                 this._processWasStart = false;
+                this._isFirstRun = false;
                 result.status = 'stoped';
                 clearInterval(this._checkingStatusTimer);
             }
             else{
                 result.status = 'tryStratr';
             }
+            checkStatusCallback(result);
         }
-        return result;
     }
 }
 

@@ -31,7 +31,7 @@ class WebSocketService{
     }
     
     async onMessage(ws , query ){ 
-        let request = JSON.parse(query );
+        let request = JSON.parse(query);
 
         switch(request.action){
             case 'printHtml':

@@ -4,13 +4,24 @@ const pdfToPrinter = require("pdf-to-printer");
 const {app} = require('electron');
 const fs = require('fs');
 const path = require('path');
+const AppSettingsService = require('./appSettingsService');
+const QueryModel = require('./../models/queryModel');
 
 class PrinterService {
+
   appSettings;
+    /**
+     * @param {AppSettingsService} appSettingsService
+     */
   constructor(appSettingsService) {
     this.appSettings = appSettingsService;
   }
 
+  /**
+   * 
+   * @param {QueryModel} queryModel 
+   * @return void
+   */
   async printHtmlAsync(queryModel){
     const str = queryModel.data;
     let printer;
@@ -40,13 +51,19 @@ class PrinterService {
     await page.pdf({ path: receipt, format: 'A4' });
     await browser.close();
     
-    console.log(receipt);
+    const options = {
+      printer: printer.title,
+      unix: ["-o fit-to-page"],
+      win32: ['-print-settings "fit"'],
+    };
+    
     //print pdf
     pdfToPrinter
-    .print(receipt, { printer: printer.title })
-    .then( (data) => fs.unlinkSync(receipt))
+    .print(receipt, options)
+    .then(() => fs.unlinkSync(receipt))
     .catch(error => console.log(error));
   }
+
 
   async getPrinterAsync(printDataType){
     let result = await this.appSettings.getPrinterByPrintDataTypeAsync(printDataType);
