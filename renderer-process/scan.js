@@ -8,9 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function scanning(){
     try {
-      // let reply = ipcRenderer.sendSync('scan');
-      // console.log(reply);
-      ipcRenderer.invoke('scan').then((result) => {
+      ipcRenderer.invoke('scan',{}).then((result) => {
         console.log(result);
       });
       

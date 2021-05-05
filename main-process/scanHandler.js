@@ -1,25 +1,27 @@
 const { ipcMain } = require('electron');
 
-const ScannerComPortService = require('./../services/scannerComPortService');
+const ScannerService = require('./../services/scannerService');
 
 class ScanHandler{
+  /**
+   * @type {ScannerService}
+   */
   scannerService;
   /**
-   * @param {ScannerComPortService}
+   * @param {ScannerService}
    */
   constructor( scannerService ){ 
     console.log('------------------ScanHandler init');
     this.scannerService = scannerService;
 
     ipcMain.handle('scan', async (event, data) => this.scanningAsync(event, data));
-    
   }
 
   scanning(event, data) {
-    this.scannerService.init();
-    
+    this.scannerService.runDataReader(( error, status) => {
+      
+    });
 
-    this.scannerService.ScanHandler
     let result = {
       testMessage : 'test'
     };
@@ -28,13 +30,7 @@ class ScanHandler{
   }
   
   async scanningAsync(event, data) {
-    this.scannerService.init();
-    
-
-    this.scannerService.ScanHandler
-    let result = {
-      testMessage : 'test'
-    };
+    var result = this.scannerService(event, data);
     let response = await new Promise( resolve => resolve(result));
     return response;
   }

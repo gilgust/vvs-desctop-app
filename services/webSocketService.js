@@ -45,12 +45,14 @@ class WebSocketService{
                 break;
             case WebSocketActions.Scan:
                 console.log(request);
-                this.scannerService.runDataReader((result) => {
-                    let data = {
+                this.scannerService.runDataReader(request.orderNumber, (result) => {
+                    let response = {
                         action: WebSocketActions.Scaned,
                         data : result
                     };
-                    ws.send(JSON.stringify({action: WebSocketActions.Scaned, data}));
+                    console.log('ws: send');
+                    console.log(response);
+                    ws.send(JSON.stringify({action: WebSocketActions.Scaned, response}));
                 });
         }
         

@@ -51,7 +51,7 @@ class ScannerService{
      * @param {checkingStatusCallback} checkStatusCallback
      * @return {void}
      */
-    runDataReader(checkStatusCallback){
+    runDataReader(orderNumber, checkStatusCallback){
       
         let dataReader = path.join(app.getAppPath(),'Data_Read.exe');
         exec(dataReader, (err, data) => {  
@@ -59,17 +59,17 @@ class ScannerService{
              console.log(data.toString());                       
         });
         
-        this.checkingDataReaderIsRunning(checkStatusCallback);
+        this.checkingDataReaderIsRunning(orderNumber, checkStatusCallback);
     }
 
     /**
      * Checking DataReader is running
      * @param {checkingStatusCallback} checkStatusCallback
      */
-    checkingDataReaderIsRunning(checkStatusCallback){
+    checkingDataReaderIsRunning(orderNumber, checkStatusCallback){
         this._checkingStatusTimer = setInterval(() =>
             processes.get(
-                (err, processes) => this.checkDataReaderStarted(err, processes, checkStatusCallback)),
+                (err, processes) => this.checkDataReaderStarted(err, processes, orderNumber, checkStatusCallback)),
                 1000);
     }
 
@@ -79,7 +79,7 @@ class ScannerService{
      * @param {Process[]} processes
      * @param {checkingStatusCallback} checkStatusCallback
      */
-    checkDataReaderStarted(err, processes, checkStatusCallback){
+    checkDataReaderStarted(err, processes, orderNumber, checkStatusCallback){
         
         if (err != null) {
             return {
@@ -94,7 +94,7 @@ class ScannerService{
             }
         });
 
-        let result = { error : null};
+        let result = { error : null, orderNumber : orderNumber};
         
         if ( process.length > 0 ) {
             if (!this._processWasStart) {

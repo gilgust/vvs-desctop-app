@@ -7,7 +7,6 @@ const AppSettingsHandler = require('./main-process/appSettingsHandler');
 const ScanHandler = require('./main-process/scanHandler');
 
 const ScannerService = require('./services/scannerService');
-const ScannerComPortService = require('./services/scannerComPortService');
 const WebSocketService = require('./services/webSocketService');
 
 const wsPort = 8998;
@@ -15,10 +14,9 @@ let appIcon = null;
 let mainWindow = null;
 let appSettingsService = new AppSettingsService();
 let printerService = new PrinterService(appSettingsService);
-let appSettingsHandler = new AppSettingsHandler(appSettingsService);
 let scannerService = new ScannerService();
-let scannerComPortService = new ScannerComPortService();
-let scanHandler = new ScanHandler(scannerComPortService);
+let appSettingsHandler = new AppSettingsHandler(appSettingsService);
+let scanHandler = new ScanHandler(scannerService);
 let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService, scannerService);
 
 function initialize(){
