@@ -4,7 +4,10 @@ const path = require('path');
 const AppSettingsService = require('./services/appSettingsService');
 const PrinterService = require('./services/printerService');
 const AppSettingsHandler = require('./main-process/appSettingsHandler');
-const ScannerServie = require('./services/scannerServie');
+const ScanHandler = require('./main-process/scanHandler');
+
+const ScannerService = require('./services/scannerService');
+const ScannerComPortService = require('./services/scannerComPortService');
 const WebSocketService = require('./services/webSocketService');
 
 const wsPort = 8998;
@@ -13,8 +16,10 @@ let mainWindow = null;
 let appSettingsService = new AppSettingsService();
 let printerService = new PrinterService(appSettingsService);
 let appSettingsHandler = new AppSettingsHandler(appSettingsService);
-let scannerServie = new ScannerServie();
-let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService, scannerServie);
+let scannerService = new ScannerService();
+let scannerComPortService = new ScannerComPortService();
+let scanHandler = new ScanHandler(scannerComPortService);
+let webSocketService = new WebSocketService(wsPort, appSettingsService, printerService, scannerService);
 
 function initialize(){
   makeSingleInstance();

@@ -1,25 +1,26 @@
 const WebSocket = require('ws');
 const AppSettingsService = require('./appSettingsService');
 const PrinterService = require('./printerService');
-const ScannerServie = require('./scannerServie');
+const ScannerService = require('./scannerService');
+const WebSocketActions = require('./../constants/webSocketActions');
 
 class WebSocketService{
 
     webSocketServer;
     appSettingsService;
     printService;
-    scannerServie;
+    scannerService;
 
     /**
      * @param {number} port
      * @param {AppSettingsService} appSettingsService
      * @param {PrinterService} printerService
-     * @param {ScannerServie} scannerServie
+     * @param {ScannerService} scannerService
      */
-    constructor(port, appSettingsService, printerService, scannerServie) {
+    constructor(port, appSettingsService, printerService, scannerService) {
         this.appSettingsService = appSettingsService;
         this.printService = printerService;
-        this.scannerServie = scannerServie;
+        this.scannerService = scannerService;
 
         this.webSocketServer = new WebSocket.Server({ port });
         this.webSocketServer.on('connection', ws => {
@@ -32,29 +33,27 @@ class WebSocketService{
     
     async onMessage(ws , query ){ 
         let request = JSON.parse(query);
+        console.log('webSocketSrvice.onMessage');
 
         switch(request.action){
-            case 'printHtml':
+            case WebSocketActions.PrintHtml:
                 await this.printService.printHtmlAsync(request);
-                ws.send(JSON.stringify({action: 'printed'}));
+                ws.send(JSON.stringify({action: WebSocketActions.Printed}));
                 break;
-            case 'checkConnection':
-                ws.send(JSON.stringify({action: 'connectionChecked'}));
+            case WebSocketActions.CheckConnection:
+                ws.send(JSON.stringify({action: WebSocketActions.ConnectionChecked}));
                 break;
-            case 'startScanning':
-                console.log('webSocketSrvice.onMessage');
+            case WebSocketActions.Scan:
                 console.log(request);
-                this.scannerServie.runDataReader((result) => {
+                this.scannerService.runDataReader((result) => {
                     let data = {
-                        action: 'startScanning',
+                        action: WebSocketActions.Scaned,
                         data : result
                     };
-                    ws.send(JSON.stringify({action: 'startScanning', data}));
+                    ws.send(JSON.stringify({action: WebSocketActions.Scaned, data}));
                 });
         }
         
     }
-
-
 }
 module.exports = WebSocketService
