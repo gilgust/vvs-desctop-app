@@ -49,6 +49,7 @@ class ScannerService{
     /**
      * @method -starting Data_Read.exe
      * @param {checkingStatusCallback} checkStatusCallback
+     * @param {number} orderNumber
      * @return {void}
      */
     runDataReader(orderNumber, checkStatusCallback){
@@ -95,6 +96,7 @@ class ScannerService{
         });
 
         let result = { error : null, orderNumber : orderNumber};
+        console.log(result);
         
         if ( process.length > 0 ) {
             if (!this._processWasStart) {

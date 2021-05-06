@@ -25,8 +25,9 @@ class WebSocketService{
         this.webSocketServer = new WebSocket.Server({ port });
         this.webSocketServer.on('connection', ws => {
             console.log('connection');
-
-            ws.send(JSON.stringify({ message: "connected"})); 
+            let response = { action: WebSocketActions.Connected, message: "connected"};
+            console.log(response);
+            ws.send(JSON.stringify(response)); 
             ws.on('message', data => this.onMessage(ws, data));
         });
     }
@@ -50,9 +51,7 @@ class WebSocketService{
                         action: WebSocketActions.Scaned,
                         data : result
                     };
-                    console.log('ws: send');
-                    console.log(response);
-                    ws.send(JSON.stringify({action: WebSocketActions.Scaned, response}));
+                    ws.send(JSON.stringify(response));
                 });
         }
         

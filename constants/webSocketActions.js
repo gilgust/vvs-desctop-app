@@ -23,6 +23,10 @@ class WebSocketActions{
      * @return {string}
      */
     ConnectionChecked = 'connectionChecked';
+    /**
+     * @return {string}
+     */
+    static Connected = 'connected';
 }
 
 module.exports = WebSocketActions;
