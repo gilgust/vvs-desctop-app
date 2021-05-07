@@ -1,5 +1,6 @@
 const { app, Tray, BrowserWindow } = require("electron");
 const path = require('path');
+const AutoLaunch = require('auto-launch');
 
 const AppSettingsService = require('./services/appSettingsService');
 const PrinterService = require('./services/printerService');
@@ -24,7 +25,7 @@ function initialize(){
 
   function createMainWindow() {
     const mainWindow = new BrowserWindow({
-      width: 1000,
+      width: 600,
       height: 600,
       title: app.getName(),
       webPreferences: {
@@ -34,7 +35,7 @@ function initialize(){
       },
     });
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.once('ready-to-show', () =>{
       mainWindow.show();
@@ -102,14 +103,13 @@ function makeSingleInstance () {
 }
 
 
-var AutoLaunch = require('auto-launch');
 var autoLauncher = new AutoLaunch({
     name: "vvs-desctop-app"
 });
 // Checking if autoLaunch is enabled, if not then enabling it.
-autoLauncher.isEnabled().then(function(isEnabled) {
+autoLauncher.isEnabled().then((isEnabled) => {
   if (isEnabled) return;
    autoLauncher.enable();
-}).catch(function (err) {
+}).catch((err) => {
   throw err;
 });
