@@ -40,11 +40,12 @@ class PrinterService {
     //generate pdf
     let data = {};
     const strTemplate = `<!DOCTYPE html><html><head></head><body>${str}</body></html>`;
-    const template = handlebars.compile(strTemplate, { strict: true });
-    const html = template(data);
+    // const template = handlebars.compile(strTemplate, { strict: true });
+    // const html = template(data);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.setContent(html);
+    // await page.setContent(html);
+    await page.setContent(strTemplate);
 
     let receipt = path.join(this.locationForReceipts(), `${queryModel.printDataType}.${Date.now().toString()}.pdf`);
 
