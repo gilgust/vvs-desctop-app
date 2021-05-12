@@ -38,8 +38,7 @@ class ScannerService{
      */
     _checkingStatusTimer;
 
-    filewatcher;
-    scansdir = path.join(app.getAppPath(), 'scans');
+    filewatcher;  
 
     constructor() {
         this._processWasStart = false;
