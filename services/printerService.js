@@ -39,7 +39,7 @@ class PrinterService {
 
     //generate pdf
     let data = {};
-    const strTemplate = `<!DOCTYPE html><html><head></head><body>${str}</body></html>`;
+    const strTemplate = `<!DOCTYPE html><html><head></head><body style="margin: 0; padding: 0;">${str}</body></html>`;
     // const template = handlebars.compile(strTemplate, { strict: true });
     // const html = template(data);
     const browser = await puppeteer.launch();
