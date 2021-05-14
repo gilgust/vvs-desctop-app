@@ -95,28 +95,36 @@ class ScannerService{
         });
 
         let result = { error : null, orderNumber : orderNumber};
-        console.log(result);
         
         if ( process.length > 0 ) {
             if (!this._processWasStart) {
+                console.log('!this._processWasStart', !this._processWasStart);
+
                 this._processWasStart = true;
             }
             if (!this._isFirstRun) {
+                console.log('this._isFirstRun', this._isFirstRun);
+
                 this._isFirstRun = true;
                 result.status = 'running';
+                console.log(result);
                 checkStatusCallback(result);
             }
         }
         else{
             if (this._processWasStart) {
+                console.log('this._processWasStart', this._processWasStart);
+
                 this._processWasStart = false;
                 this._isFirstRun = false;
                 result.status = 'stoped';
                 clearInterval(this._checkingStatusTimer);
             }
             else{
+                console.log('tryStratr', tryStratr);
                 result.status = 'tryStratr';
             }
+            console.log(result);
             checkStatusCallback(result);
         }
     }

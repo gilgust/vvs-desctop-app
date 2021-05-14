@@ -38,8 +38,15 @@ function initialize(){
     // mainWindow.webContents.openDevTools();
 
     mainWindow.once('ready-to-show', () =>{
-      mainWindow.show();
+      mainWindow.hide();
+    }); 
+
+    mainWindow.on('minimize', (event) =>{
+      console.log('on minimaze');
+      mainWindow.hide();
+      mainWindow.setSkipTaskbar(true);
     });
+
     mainWindow.removeMenu();
 
     return mainWindow;
@@ -51,6 +58,7 @@ function initialize(){
         if (mainWindow == null) {
           return;
         }
+        
         if(mainWindow.isVisible()){
             mainWindow.hide();
             mainWindow.setSkipTaskbar(true);
@@ -65,7 +73,7 @@ function initialize(){
   }
   
   app.on('ready', () => {
-    createMainWindow();
+    mainWindow = createMainWindow();
     createTray();
   })
 
@@ -86,8 +94,6 @@ function initialize(){
   });
 
 }
- 
-initialize();
 
 function makeSingleInstance () {
   if (process.mas) return
@@ -113,3 +119,5 @@ autoLauncher.isEnabled().then((isEnabled) => {
 }).catch((err) => {
   throw err;
 });
+
+initialize();
