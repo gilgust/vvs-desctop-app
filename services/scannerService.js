@@ -37,12 +37,15 @@ class ScannerService{
      * @type{NodeJS.Timeout}
      */
     _checkingStatusTimer;
-
-    filewatcher;  
+    /**
+     * @type{number}
+     */
+    _countTrytartProcess;
 
     constructor() {
         this._processWasStart = false;
         this._isFirstRun = false;
+        this._countTrytartProcess = 5;
     }
 
     /**
@@ -69,8 +72,11 @@ class ScannerService{
     checkingDataReaderIsRunning(orderNumber, checkStatusCallback){
         this._checkingStatusTimer = setInterval(() =>
             processes.get(
-                (err, processes) => this.checkDataReaderStarted(err, processes, orderNumber, checkStatusCallback)),
-                1000);
+                (err, processes) => {
+                    this._countTrytartProcess = 5;
+                    this.checkDataReaderStarted(err, processes, orderNumber, checkStatusCallback);
+                }),
+                700);
     }
 
     
@@ -112,7 +118,7 @@ class ScannerService{
             }
         }
         else{
-            if (this._processWasStart) {
+            if (this._processWasStart &&  this._countTrytartProcess > 0) {
                 console.log('this._processWasStart', this._processWasStart);
 
                 this._processWasStart = false;
@@ -121,7 +127,7 @@ class ScannerService{
                 clearInterval(this._checkingStatusTimer);
             }
             else{
-                console.log('tryStratr', tryStratr);
+                --this._countTrytartProcess;
                 result.status = 'tryStratr';
             }
             console.log(result);
